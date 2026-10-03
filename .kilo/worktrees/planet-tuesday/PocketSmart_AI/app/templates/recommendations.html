@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations{% endblock %}
+
+{% block content %}
+<div class="recommendations-container container">
+    <div class="results-header">
+        <h2>Your AI Recommendations</h2>
+        <p>Planner: <span class="badge badge-primary">{{ planner_type }}</span></p>
+    </div>
+    
+    <div class="results-layout">
+        <div class="main-content">
+            {% if planner_type == "Jewelry" and result.outfit_analysis %}
+                <div class="analysis-card glass-card section-margin">
+                    <h3><i class="fa-solid fa-magnifying-glass"></i> Outfit Analysis</h3>
+                    <div class="analysis-tags">
+                        <div class="tag-group">
+                            <span>Colors:</span>
+                            {% for color in result.outfit_analysis.primary_colors %}
+                                <span class="badge badge-secondary">{{ color }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="tag-group">
+                            <span>Style:</span>
+                            <span class="badge badge-secondary">{{ result.outfit_analysis.style }}</span>
+                        </div>
+                        <div class="tag-group">
+                            <span>Formality:</span>
+                            <span class="badge badge-secondary">{{ result.outfit_analysis.formality }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <h3>Recommended Allocations</h3>
+            <div class="allocations-list">
+                {% set items = result.allocations if planner_type != "Jewelry" else result.recommendations %}
+                {% for item in items %}
+                    <div class="allocation-card glass-card">
+                        <div class="allocation-header">
+                            <h4>
+                                {% if planner_type == "Home" %}
+                                    {{ item.item }} ({{ item.category }})
+                                {% elif planner_type == "Party" %}
+                                    {{ item.category }}
+                                {% else %}
+                                    {{ item.item_type }}: {{ item.description }}
+                                {% endif %}
+                            </h4>
+                            <span class="price-tag">
+                                {% if planner_type == "Jewelry" %}
+                                    ~${{ item.estimated_price }}
+                                {% else %}
+                                    ${{ item.allocated_amount }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <p class="reasoning"><i class="fa-solid fa-lightbulb highlight"></i> {{ item.reasoning }}</p>
+                        
+                        <div class="buy-links">
+                            <p class="small-title">Shop on:</p>
+                            <div class="links-grid">
+                                {% for link in item.buy_links %}
+                                    <a href="{{ link.url }}" target="_blank" class="store-btn {{ link.class }}">
+                                        {{ link.platform }} <i class="fa-solid fa-external-link-alt"></i>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <div class="summary-card glass-card">
+                <h3>Summary</h3>
+                
+                <div class="summary-stats">
+                    {% if planner_type != "Jewelry" %}
+                        <div class="stat-row">
+                            <span>Total Allocated:</span>
+                            <span class="bold">${{ result.total_allocated }}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Remaining Budget:</span>
+                            <span class="bold {% if result.remaining_budget < 0 %}danger{% endif %}">${{ result.remaining_budget }}</span>
+                        </div>
+                        {% if result.per_person_cost %}
+                            <div class="stat-row">
+                                <span>Cost per Person:</span>
+                                <span>${{ result.per_person_cost }}</span>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="stat-row">
+                            <span>Total Estimated:</span>
+                            <span class="bold">${{ result.total_estimated }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="ai-advice">
+                    <h4><i class="fa-solid fa-robot"></i> AI Advice</h4>
+                    <p>{{ result.advice }}</p>
+                </div>
+                
+                <a href="{{ url_for('pages.dashboard') }}" class="btn-outline full-width">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

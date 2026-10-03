@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Management &amp; Viewer - PocketSmart</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="ps-navbar">
+    <div class="container ps-navbar-container">
+      <a href="/dashboard" class="ps-brand">
+        <span class="ps-brand-badge"></span>
+        PocketSmart
+      </a>
+      <ul class="ps-nav-menu">
+        <li><a href="/dashboard" class="ps-nav-link">Dashboard</a></li>
+        <li><a href="/home-planner" class="ps-nav-link">Home Planner</a></li>
+        <li><a href="/party-planner" class="ps-nav-link">Party Planner</a></li>
+        <li><a href="/jewelry-planner" class="ps-nav-link">Jewelry Planner</a></li>
+        <li><a href="/history" class="ps-nav-link">History</a></li>
+        <li><a href="/database" class="ps-nav-link active" style="color: #60a5fa;">🗄️ Database</a></li>
+        <li><a href="/logout" class="ps-nav-link" style="color: #fca5a5;">🚪 Logout</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <div class="ps-page-banner" style="background-color: #0f274a;">
+      <div class="container">
+        <div style="display: inline-block; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); padding: 4px 12px; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; color: #93c5fd; margin-bottom: 0.75rem;">
+          🛡️ Administrator Area &bull; Verified: {{ user.username }}
+        </div>
+        <h1 class="ps-page-banner-title">🗄️ Database Explorer &amp; Storage Details</h1>
+        <p class="ps-page-banner-subtitle">Inspect where data is stored, view registered accounts, and verify recommendation records</p>
+      </div>
+    </div>
+
+    <div class="container" style="padding-bottom: 3.5rem;">
+      <!-- Stats Cards -->
+      <div class="ps-grid-3" style="margin-bottom: 2rem;">
+        <div style="background: #ffffff; border: 1px solid var(--ps-border); border-radius: 10px; padding: 1.25rem;">
+          <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">DATABASE FILE</div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #1e3a6f; word-break: break-all; margin-top: 4px;">
+            pocketsmart.db
+          </div>
+          <small style="color: #16a34a; font-weight: 600;">✓ SQLite 3 Active</small>
+        </div>
+
+        <div style="background: #ffffff; border: 1px solid var(--ps-border); border-radius: 10px; padding: 1.25rem;">
+          <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">REGISTERED USERS</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: #2563eb; margin-top: 4px;">
+            {{ users|length }}
+          </div>
+          <small style="color: #64748b;">Table: users</small>
+        </div>
+
+        <div style="background: #ffffff; border: 1px solid var(--ps-border); border-radius: 10px; padding: 1.25rem;">
+          <div style="font-size: 0.8rem; color: #64748b; font-weight: 600;">SAVED RECOMMENDATIONS</div>
+          <div style="font-size: 1.8rem; font-weight: 800; color: #d97706; margin-top: 4px;">
+            {{ recommendations|length }}
+          </div>
+          <small style="color: #64748b;">Table: recommendations</small>
+        </div>
+      </div>
+
+      <!-- How to View Database Guide -->
+      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 1.4rem; margin-bottom: 2rem;">
+        <h3 style="color: #1e3a6f; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem;">
+          💡 How to View &amp; Access this Database Outside the Web
+        </h3>
+        <p style="font-size: 0.88rem; color: #334155; margin-bottom: 0.8rem; line-height: 1.5;">
+          All credentials, registration records, and generated plans are stored permanently in the file 
+          <code style="background: #ffffff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">c:\Users\p\OneDrive\Desktop\NM_proj\pocketsmart.db</code>.
+        </p>
+        <div style="font-size: 0.82rem; color: #1e293b; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 0.75rem; font-family: monospace;">
+          # 1. View from PowerShell terminal:<br>
+          .\venv\Scripts\python.exe -c "import sqlite3; c=sqlite3.connect('pocketsmart.db'); print('Users:', c.execute('SELECT username, email FROM users').fetchall())"<br><br>
+          # 2. Or open pocketsmart.db in any free visual tool like 'DB Browser for SQLite'
+        </div>
+      </div>
+
+      <!-- Table 1: Registered Users -->
+      <div class="ps-results-card" style="margin-bottom: 2rem;">
+        <div class="ps-summary-bar">
+          <span>👥 Table: users ({{ users|length }} records)</span>
+          <span>Authentication &amp; User Accounts</span>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="ps-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Password Hash</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if users and users|length > 0 %}
+                {% for u in users %}
+                <tr>
+                  <td><strong>#{{ u.id }}</strong></td>
+                  <td><span style="font-weight: 700; color: #1e3a6f;">{{ u.username }}</span></td>
+                  <td>{{ u.email }}</td>
+                  <td>{{ u.full_name or '—' }}</td>
+                  <td><code style="font-size: 0.72rem; color: #64748b;">{{ u.hashed_password[:20] }}...</code></td>
+                  <td><small>{{ u.created_at }}</small></td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                    No users registered yet. Register a new user at <a href="/register">/register</a>!
+                  </td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Table 2: Recommendations -->
+      <div class="ps-results-card">
+        <div class="ps-summary-bar" style="background-color: #0f766e;">
+          <span>📋 Table: recommendations ({{ recommendations|length }} records)</span>
+          <span>Stored AI Budget Plans</span>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="ps-table">
+            <thead>
+              <tr>
+                <th>Plan ID</th>
+                <th>User</th>
+                <th>Type</th>
+                <th>Timestamp</th>
+                <th>Input Summary</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if recommendations and recommendations|length > 0 %}
+                {% for r in recommendations %}
+                <tr>
+                  <td><code>{{ r.id[:8] }}...</code></td>
+                  <td><strong>{{ r.username }}</strong></td>
+                  <td>
+                    <span style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: 600; font-size: 0.78rem; text-transform: uppercase;">
+                      {{ r.type }}
+                    </span>
+                  </td>
+                  <td><small>{{ r.timestamp[:16].replace('T', ' ') }}</small></td>
+                  <td><small style="color: #475569;">{{ r.input_summary }}</small></td>
+                  <td>
+                    <button class="ps-btn ps-btn-blue ps-btn-sm" onclick="showRecData('{{ r.id }}')">
+                      View JSON
+                    </button>
+                    <div id="rec-{{ r.id }}" style="display: none;">{{ r.full_result }}</div>
+                  </td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                    No recommendations generated yet. Create one via <a href="/home-planner">Home</a>, <a href="/party-planner">Party</a>, or <a href="/jewelry-planner">Jewelry</a> planners!
+                  </td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal for JSON View -->
+  <div id="jsonModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div style="background: #ffffff; border-radius: 12px; max-width: 720px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 1.75rem; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: #1e293b;">Stored Database Record (JSON)</h3>
+        <button onclick="document.getElementById('jsonModal').style.display='none'" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #64748b;">✕</button>
+      </div>
+      <div id="jsonContent"></div>
+    </div>
+  </div>
+
+  <footer class="ps-footer" style="padding: 1.5rem 0; margin-top: auto;">
+    <div class="container" style="text-align: center; color: #94a3b8; font-size: 0.82rem;">
+      &copy; 2025 PocketSmart. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    function showRecData(id) {
+      const raw = document.getElementById('rec-' + id).textContent;
+      try {
+        const parsed = JSON.parse(raw);
+        document.getElementById('jsonContent').innerHTML = `<pre style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; overflow-x: auto; font-family: monospace; font-size: 0.82rem; line-height: 1.5;">${JSON.stringify(parsed, null, 2)}</pre>`;
+      } catch (e) {
+        document.getElementById('jsonContent').textContent = raw;
+      }
+      document.getElementById('jsonModal').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>

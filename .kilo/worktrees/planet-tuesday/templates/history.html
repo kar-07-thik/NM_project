@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recommendation History - PocketSmart</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Navbar (Page 58) -->
+  <header class="ps-navbar">
+    <div class="container ps-navbar-container">
+      <a href="/dashboard" class="ps-brand">
+        <span class="ps-brand-badge"></span>
+        PocketSmart
+      </a>
+      <ul class="ps-nav-menu">
+        <li><a href="/dashboard" class="ps-nav-link">Dashboard</a></li>
+        <li><a href="/home-planner" class="ps-nav-link">Home Planner</a></li>
+        <li><a href="/party-planner" class="ps-nav-link">Party Planner</a></li>
+        <li><a href="/jewelry-planner" class="ps-nav-link">Jewelry Planner</a></li>
+        <li><a href="/history" class="ps-nav-link active">History</a></li>
+        {% if user and user.is_admin %}
+        <li><a href="/database" class="ps-nav-link" style="color: #60a5fa;">🛡️ Admin DB</a></li>
+        {% endif %}
+        <li><a href="/logout" class="ps-nav-link" style="color: #fca5a5;">🚪 Logout</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Banner (Page 58) -->
+    <div class="ps-page-banner">
+      <div class="container">
+        <h1 class="ps-page-banner-title">Your Recommendation History</h1>
+        <p class="ps-page-banner-subtitle">View and manage all your previous budget plans and recommendations</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Section Title (Page 58) -->
+      <div style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;">
+        <span>🕒</span> Recent Recommendations
+      </div>
+
+      <div class="ps-history-grid">
+        {% if history and history|length > 0 %}
+          {% for item in history %}
+          <div class="ps-history-card">
+            <div>
+              <!-- Top Row: Icon, Title, Date (Page 58) -->
+              <div class="ps-history-card-top">
+                <div class="ps-history-card-title">
+                  {% if item.type == 'jewelry' %}
+                    <span style="color: #db2777;">💍</span> Jewelry Budget
+                  {% elif item.type == 'party' %}
+                    <span style="color: #d97706;">🎉</span> Party Planning Budget
+                  {% else %}
+                    <span style="color: #16a34a;">🏠</span> Home Interior Budget
+                  {% endif %}
+                </div>
+                <div class="ps-history-card-date">
+                  {{ item.timestamp[:16].replace('T', ' ') }}
+                </div>
+              </div>
+
+              <!-- Total Budget & Remaining -->
+              <div class="ps-history-budgets">
+                <div>
+                  <div class="ps-history-budget-label">Total Budget</div>
+                  <div class="ps-history-budget-val">₹{{ item.input_summary.total_budget }}</div>
+                </div>
+                <div>
+                  <div class="ps-history-budget-label">Remaining</div>
+                  <div class="ps-history-budget-rem">
+                    ₹{{ item.full_result.remaining_budget if item.full_result.remaining_budget is defined else '0' }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Content details per type -->
+              <div style="font-size: 0.85rem; color: #334155; line-height: 1.6;">
+                {% if item.type == 'jewelry' %}
+                  <div><strong>Occasion:</strong> {{ item.input_summary.occasion }}</div>
+                  <div><strong>With outfit image:</strong> {{ 'Yes' if item.input_summary.has_image or item.full_result.outfit_analysis else 'No' }}</div>
+                  
+                  <div class="ps-history-tags">
+                    <span class="ps-history-tag">jewelry</span>
+                    <span class="ps-history-tag">{{ item.input_summary.occasion }}</span>
+                  </div>
+
+                {% elif item.type == 'party' %}
+                  <div><strong>Party Type:</strong> {{ item.input_summary.party_type }}</div>
+                  <div><strong>Guests:</strong> {{ item.input_summary.num_guests }}</div>
+                  <div>
+                    <strong>Needs:</strong> 
+                    {% set needs = [] %}
+                    {% if item.input_summary.needs_catering %}{% set _ = needs.append('Catering') %}{% endif %}
+                    {% if item.input_summary.needs_decoration %}{% set _ = needs.append('Decoration') %}{% endif %}
+                    {% if item.input_summary.needs_entertainment %}{% set _ = needs.append('Entertainment') %}{% endif %}
+                    {{ needs | join(', ') if needs else 'General' }}
+                  </div>
+
+                  <div class="ps-history-tags">
+                    <span class="ps-history-tag">venue</span>
+                    <span class="ps-history-tag">catering</span>
+                    <span class="ps-history-tag">entertainment</span>
+                    <span class="ps-history-tag">contingency</span>
+                  </div>
+
+                {% else %}
+                  <div>
+                    <strong>Rooms:</strong>
+                    {% set rooms = [] %}
+                    {% if item.input_summary.has_living_room %}{% set _ = rooms.append('Living Room') %}{% endif %}
+                    {% if item.input_summary.has_kitchen %}{% set _ = rooms.append('Kitchen') %}{% endif %}
+                    {% if item.input_summary.has_bedroom %}{% set _ = rooms.append('Bedroom') %}{% endif %}
+                    {{ rooms | join(', ') if rooms else 'Full Home' }}
+                  </div>
+                  <div>
+                    <strong>Lights:</strong> {{ item.input_summary.num_lights }} &nbsp;|&nbsp;
+                    <strong>Fans:</strong> {{ item.input_summary.num_fans }} &nbsp;|&nbsp;
+                    <strong>Furniture:</strong> {{ item.input_summary.num_furniture }}
+                  </div>
+
+                  <div class="ps-history-tags">
+                    <span class="ps-history-tag">lighting</span>
+                    <span class="ps-history-tag">ceiling fans</span>
+                    <span class="ps-history-tag">furniture</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Solid Blue Button (Page 58) -->
+            <div style="margin-top: 1rem;">
+              <button 
+                class="ps-btn ps-btn-blue ps-btn-sm ps-btn-full" 
+                onclick="showDetailsModal('{{ item.id }}')"
+              >
+                View Full Details
+              </button>
+            </div>
+
+            <!-- Hidden Raw Data for Modal -->
+            <div id="data-{{ item.id }}" style="display: none;">{{ item.full_result | tojson }}</div>
+          </div>
+          {% endfor %}
+
+        {% else %}
+          <!-- Default Mock Cards matching PDF Page 58 for initial look -->
+          <!-- Card 1 -->
+          <div class="ps-history-card">
+            <div>
+              <div class="ps-history-card-top">
+                <div class="ps-history-card-title">
+                  <span style="color: #db2777;">💍</span> Jewelry Budget
+                </div>
+                <div class="ps-history-card-date">May 22, 2025, 12:06 PM</div>
+              </div>
+              <div class="ps-history-budgets">
+                <div>
+                  <div class="ps-history-budget-label">Total Budget</div>
+                  <div class="ps-history-budget-val">₹5,000</div>
+                </div>
+                <div>
+                  <div class="ps-history-budget-label">Remaining</div>
+                  <div class="ps-history-budget-rem">₹800</div>
+                </div>
+              </div>
+              <div style="font-size: 0.85rem; color: #334155; line-height: 1.6;">
+                <div><strong>Occasion:</strong> Birthday</div>
+                <div><strong>With outfit image:</strong> Yes</div>
+                <div class="ps-history-tags">
+                  <span class="ps-history-tag">jewelry</span>
+                  <span class="ps-history-tag">styling</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="/jewelry-planner" class="ps-btn ps-btn-blue ps-btn-sm ps-btn-full">View Full Details</a>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="ps-history-card">
+            <div>
+              <div class="ps-history-card-top">
+                <div class="ps-history-card-title">
+                  <span style="color: #d97706;">🎉</span> Party Planning Budget
+                </div>
+                <div class="ps-history-card-date">May 22, 2025, 12:05 PM</div>
+              </div>
+              <div class="ps-history-budgets">
+                <div>
+                  <div class="ps-history-budget-label">Total Budget</div>
+                  <div class="ps-history-budget-val">₹5,000</div>
+                </div>
+                <div>
+                  <div class="ps-history-budget-label">Remaining</div>
+                  <div class="ps-history-budget-rem">₹0</div>
+                </div>
+              </div>
+              <div style="font-size: 0.85rem; color: #334155; line-height: 1.6;">
+                <div><strong>Party Type:</strong> wedding</div>
+                <div><strong>Guests:</strong> 3</div>
+                <div><strong>Needs:</strong> Catering, Entertainment</div>
+                <div class="ps-history-tags">
+                  <span class="ps-history-tag">venue</span>
+                  <span class="ps-history-tag">catering</span>
+                  <span class="ps-history-tag">entertainment</span>
+                  <span class="ps-history-tag">contingency</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="/party-planner" class="ps-btn ps-btn-blue ps-btn-sm ps-btn-full">View Full Details</a>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="ps-history-card">
+            <div>
+              <div class="ps-history-card-top">
+                <div class="ps-history-card-title">
+                  <span style="color: #16a34a;">🏠</span> Home Interior Budget
+                </div>
+                <div class="ps-history-card-date">May 22, 2025, 12:02 PM</div>
+              </div>
+              <div class="ps-history-budgets">
+                <div>
+                  <div class="ps-history-budget-label">Total Budget</div>
+                  <div class="ps-history-budget-val">₹5,000</div>
+                </div>
+                <div>
+                  <div class="ps-history-budget-label">Remaining</div>
+                  <div class="ps-history-budget-rem">₹500</div>
+                </div>
+              </div>
+              <div style="font-size: 0.85rem; color: #334155; line-height: 1.6;">
+                <div><strong>Rooms:</strong> Living Room, Kitchen</div>
+                <div><strong>Lights:</strong> 5 &nbsp;|&nbsp; <strong>Fans:</strong> 4 &nbsp;|&nbsp; <strong>Furniture:</strong> 2</div>
+                <div class="ps-history-tags">
+                  <span class="ps-history-tag">lighting</span>
+                  <span class="ps-history-tag">ceiling fans</span>
+                  <span class="ps-history-tag">furniture</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 1rem;">
+              <a href="/home-planner" class="ps-btn ps-btn-blue ps-btn-sm ps-btn-full">View Full Details</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+
+  <!-- Interactive Details Modal -->
+  <div id="detailsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; padding: 1.5rem;">
+    <div style="background: #ffffff; border-radius: 12px; max-width: 720px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 1.75rem; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: #1e293b;">Recommendation Full Details</h3>
+        <button onclick="closeModal()" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #64748b;">✕</button>
+      </div>
+      <div id="modalBody" style="font-size: 0.88rem; color: #334155;"></div>
+    </div>
+  </div>
+
+  <footer class="ps-footer" style="padding: 1.5rem 0; margin-top: auto;">
+    <div class="container" style="text-align: center; color: #94a3b8; font-size: 0.82rem;">
+      &copy; 2025 PocketSmart. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    function showDetailsModal(id) {
+      const rawEl = document.getElementById('data-' + id);
+      if (!rawEl) return;
+      try {
+        const data = JSON.parse(rawEl.textContent);
+        let content = `<pre style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; overflow-x: auto; font-family: monospace; font-size: 0.82rem; line-height: 1.5;">${JSON.stringify(data, null, 2)}</pre>`;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('detailsModal').style.display = 'flex';
+      } catch (e) {
+        alert('Could not render details.');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('detailsModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

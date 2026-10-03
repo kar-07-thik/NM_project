@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <h1>Smarter Budgeting with <span class="highlight">Generative AI</span></h1>
+            <p>Your personal assistant for Home Interiors, Parties, and Fashion. Optimize your budget and get intelligent, multimodal recommendations powered by Gemini AI.</p>
+            <div class="hero-buttons">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('pages.dashboard') }}" class="btn-primary large">Go to Dashboard <i class="fa-solid fa-arrow-right"></i></a>
+                {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="btn-primary large">Get Started <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="{{ url_for('auth.login') }}" class="btn-outline large">Login</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="glass-card mockup-card">
+                <div class="mockup-header">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Recommendation
+                </div>
+                <div class="mockup-body">
+                    <div class="skeleton-line full"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="mockup-item">
+                        <div class="mockup-icon"><i class="fa-solid fa-couch"></i></div>
+                        <div class="mockup-text">
+                            <span class="mockup-title">Living Room Sofa</span>
+                            <span class="mockup-price">$450 Allocated</span>
+                        </div>
+                    </div>
+                    <div class="mockup-item">
+                        <div class="mockup-icon"><i class="fa-solid fa-gem"></i></div>
+                        <div class="mockup-text">
+                            <span class="mockup-title">Silver Bracelet</span>
+                            <span class="mockup-price">Matches Blue Outfit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features container">
+    <div class="section-header">
+        <h2>Three Core Planners</h2>
+        <p>Tailored AI solutions for your specific needs</p>
+    </div>
+    
+    <div class="features-grid">
+        <div class="feature-card glass-card">
+            <div class="feature-icon"><i class="fa-solid fa-house-chimney"></i></div>
+            <h3>Home Interior</h3>
+            <p>Allocate budget intelligently across rooms, lighting, fans, and furniture based on total constraints.</p>
+        </div>
+        
+        <div class="feature-card glass-card">
+            <div class="feature-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+            <h3>Party Planner</h3>
+            <p>Plan perfect events with optimized budget splitting for venue, catering, decor, and entertainment.</p>
+        </div>
+        
+        <div class="feature-card glass-card">
+            <div class="feature-icon"><i class="fa-solid fa-ring"></i></div>
+            <h3>Jewelry Matcher</h3>
+            <p>Upload your outfit image and our multimodal AI will recommend complementary jewelry within budget.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="100%" height="100%">
+  <defs>
+    <linearGradient id="wall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="sofa" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Wall & Floor -->
+  <rect width="600" height="250" fill="url(#wall)"/>
+  <rect y="250" width="600" height="100" fill="url(#floor)"/>
+  <!-- Wall Art -->
+  <rect x="230" y="40" width="140" height="90" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="4"/>
+  <circle cx="280" cy="80" r="22" fill="#f59e0b" opacity="0.8"/>
+  <path d="M245 115 L285 75 L320 115 Z" fill="#3b82f6" opacity="0.7"/>
+  <path d="M295 115 L330 85 L355 115 Z" fill="#10b981" opacity="0.7"/>
+  <!-- Modern Ceiling Lamp -->
+  <line x1="120" y1="0" x2="120" y2="70" stroke="#475569" stroke-width="3"/>
+  <path d="M90 70 L150 70 L160 100 L80 100 Z" fill="#f59e0b"/>
+  <ellipse cx="120" cy="100" rx="40" ry="10" fill="#fbbf24"/>
+  <!-- Modern Sofa -->
+  <rect x="150" y="160" width="300" height="85" rx="16" fill="url(#sofa)"/>
+  <!-- Sofa Backrest -->
+  <rect x="165" y="125" width="270" height="60" rx="12" fill="#2563eb"/>
+  <!-- Cushions -->
+  <rect x="180" y="145" width="70" height="50" rx="8" fill="#60a5fa"/>
+  <rect x="265" y="145" width="70" height="50" rx="8" fill="#93c5fd"/>
+  <rect x="350" y="145" width="70" height="50" rx="8" fill="#60a5fa"/>
+  <!-- Sofa Armrests -->
+  <rect x="135" y="150" width="35" height="90" rx="12" fill="#1e40af"/>
+  <rect x="430" y="150" width="35" height="90" rx="12" fill="#1e40af"/>
+  <!-- Sofa Legs -->
+  <line x1="165" y1="245" x2="155" y2="270" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+  <line x1="435" y1="245" x2="445" y2="270" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+  <!-- Coffee Table -->
+  <ellipse cx="300" cy="275" rx="80" ry="25" fill="#f8fafc" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="250" y1="285" x2="245" y2="305" stroke="#475569" stroke-width="4"/>
+  <line x1="350" y1="285" x2="355" y2="305" stroke="#475569" stroke-width="4"/>
+  <!-- Plant -->
+  <path d="M500 240 Q470 200 480 170 Q495 200 500 240" fill="#10b981"/>
+  <path d="M505 240 Q535 190 525 160 Q510 195 505 240" fill="#059669"/>
+  <path d="M502 240 Q500 180 505 150 Q515 185 502 240" fill="#34d399"/>
+  <polygon points="485,240 520,240 515,280 490,280" fill="#ea580c"/>
+</svg>

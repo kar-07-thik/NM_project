@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Back - PocketSmart</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body style="background-color: #f1f5f9;">
+
+  <div class="ps-auth-wrap">
+    <!-- Brand Logo (Page 44) -->
+    <div class="ps-auth-logo-wrap">
+      <div class="ps-auth-logo">PocketSmart</div>
+      <div class="ps-auth-sublogo">AI-Powered Budget Planning</div>
+    </div>
+
+    <!-- Login Card (Page 44) -->
+    <div class="ps-auth-card">
+      <h2 class="ps-auth-card-title">Welcome Back</h2>
+
+      {% if error %}
+      <div class="ps-alert ps-alert-error">
+        <span>⚠️</span> {{ error }}
+      </div>
+      {% endif %}
+
+      {% if success %}
+      <div class="ps-alert ps-alert-success">
+        <span>✅</span> {{ success }}
+      </div>
+      {% endif %}
+
+      <form action="/token" method="post" id="loginForm">
+        <!-- Username -->
+        <div class="ps-form-group">
+          <label class="ps-form-label">Username</label>
+          <div class="ps-input-wrap">
+            <span class="ps-input-icon">👤</span>
+            <input 
+              type="text" 
+              name="username" 
+              class="ps-form-input" 
+              placeholder="Enter your username" 
+              required 
+              autocomplete="username"
+            >
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="ps-form-group">
+          <label class="ps-form-label">Password</label>
+          <div class="ps-input-wrap">
+            <span class="ps-input-icon">🔒</span>
+            <input 
+              type="password" 
+              name="password" 
+              class="ps-form-input" 
+              placeholder="Enter your password" 
+              required 
+              autocomplete="current-password"
+            >
+          </div>
+          <div style="text-align: right; margin-top: 6px;">
+            <a href="#" onclick="alert('Please contact admin or register a new account.'); return false;" style="font-size: 0.8rem; color: #64748b;">
+              Forgot Password?
+            </a>
+          </div>
+        </div>
+
+        <!-- Submit Button (Page 44) -->
+        <div style="margin-top: 1.5rem;">
+          <button type="submit" class="ps-btn ps-btn-blue ps-btn-full" id="loginBtn">
+            Sign In →
+          </button>
+        </div>
+      </form>
+
+      <!-- Bottom link -->
+      <div class="ps-auth-link">
+        Don't have an account? <a href="/register">Create Account</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function() {
+      document.getElementById('loginBtn').innerText = 'Signing In...';
+    });
+  </script>
+</body>
+</html>

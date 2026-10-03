@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Interior Budget Planner - PocketSmart</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Navbar (Page 48) -->
+  <header class="ps-navbar">
+    <div class="container ps-navbar-container">
+      <a href="/dashboard" class="ps-brand">
+        <span class="ps-brand-badge"></span>
+        PocketSmart
+      </a>
+      <ul class="ps-nav-menu">
+        <li><a href="/dashboard" class="ps-nav-link">Dashboard</a></li>
+        <li><a href="/home-planner" class="ps-nav-link active">Home Budget</a></li>
+        <li><a href="/party-planner" class="ps-nav-link">Party Budget</a></li>
+        <li><a href="/jewelry-planner" class="ps-nav-link">Jewelry Budget</a></li>
+        {% if user and user.is_admin %}
+        <li><a href="/database" class="ps-nav-link" style="color: #60a5fa;">🛡️ Admin DB</a></li>
+        {% endif %}
+        <li><a href="/logout" class="ps-nav-link" style="color: #fca5a5;">🚪 Logout</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Header (Page 48) -->
+    <div class="ps-page-banner">
+      <div class="container">
+        <h1 class="ps-page-banner-title">Home Interior Budget Planner</h1>
+        <p class="ps-page-banner-subtitle">Create a customized budget plan for your dream home interior</p>
+      </div>
+    </div>
+
+    <div class="container ps-form-container">
+      <!-- Input Form Card (Page 48) -->
+      <div class="ps-form-card" id="formCard">
+        <form id="homeForm">
+          <!-- Section 1: Budget Details -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>💲</span> Budget Details
+            </div>
+            <div class="ps-form-group">
+              <label class="ps-form-label">Total Budget (₹ / $)</label>
+              <div class="ps-input-wrap">
+                <span class="ps-input-icon">💵</span>
+                <input 
+                  type="number" 
+                  name="total_budget" 
+                  class="ps-form-input" 
+                  placeholder="5000" 
+                  value="5000" 
+                  required 
+                  min="500"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Fixtures & Furniture -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>💡</span> Fixtures &amp; Furniture
+            </div>
+            <div class="ps-form-grid-2">
+              <div class="ps-form-group">
+                <label class="ps-form-label">📌 Number of Lights/Fixtures</label>
+                <input type="number" name="num_lights" class="ps-form-input" value="5" min="0">
+              </div>
+              <div class="ps-form-group">
+                <label class="ps-form-label">🌀 Number of Ceiling Fans</label>
+                <input type="number" name="num_fans" class="ps-form-input" value="4" min="0">
+              </div>
+              <div class="ps-form-group">
+                <label class="ps-form-label">🛋️ Number of Furniture Pieces</label>
+                <input type="number" name="num_furniture" class="ps-form-input" value="2" min="0">
+              </div>
+              <div class="ps-form-group">
+                <label class="ps-form-label">🍽️ Number of Dining Tables</label>
+                <input type="number" name="num_dining_tables" class="ps-form-input" value="1" min="0">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Rooms to Include -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>🏠</span> Rooms to Include
+            </div>
+            <div class="ps-checkbox-group">
+              <label class="ps-checkbox-label checked" id="lbl_living">
+                <input type="checkbox" name="has_living_room" value="true" checked onchange="toggleBox(this, 'lbl_living')">
+                <span>🛋️</span> Living Room
+              </label>
+              <label class="ps-checkbox-label checked" id="lbl_kitchen">
+                <input type="checkbox" name="has_kitchen" value="true" checked onchange="toggleBox(this, 'lbl_kitchen')">
+                <span>🍳</span> Kitchen
+              </label>
+              <label class="ps-checkbox-label" id="lbl_bedroom">
+                <input type="checkbox" name="has_bedroom" value="true" onchange="toggleBox(this, 'lbl_bedroom')">
+                <span>🛏️</span> Bedroom
+              </label>
+            </div>
+          </div>
+
+          <!-- Section 4: Additional Information -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>📝</span> Additional Information
+            </div>
+            <div class="ps-form-group">
+              <label class="ps-form-label">Special Requirements or Preferences</label>
+              <textarea 
+                name="additional_requirements" 
+                class="ps-form-textarea" 
+                placeholder="Any specific requirements or preferences..."
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div style="margin-top: 1.5rem;">
+            <button type="submit" class="ps-btn ps-btn-blue ps-btn-full" id="submitBtn">
+              📋 Generate Recommendations
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="loadingBox" style="display: none; text-align: center; padding: 2.5rem 1rem;">
+        <div class="ps-spinner"></div>
+        <p style="font-weight: 600; color: #1e3a6f;">Generating Personalized Budget Recommendations...</p>
+        <p style="color: #64748b; font-size: 0.85rem;">Using Gemini AI to analyze prices across Amazon, Flipkart, Ikea, Myntra &amp; Ajio</p>
+      </div>
+
+      <!-- Results Area (Page 50) -->
+      <div id="resultsArea" style="display: none;"></div>
+
+    </div>
+  </main>
+
+  <footer class="ps-footer" style="padding: 1.5rem 0; margin-top: auto;">
+    <div class="container" style="text-align: center; color: #94a3b8; font-size: 0.82rem;">
+      &copy; 2025 PocketSmart. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    function toggleBox(cb, lblId) {
+      const lbl = document.getElementById(lblId);
+      if (cb.checked) {
+        lbl.classList.add('checked');
+      } else {
+        lbl.classList.remove('checked');
+      }
+    }
+
+    document.getElementById('homeForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const load = document.getElementById('loadingBox');
+      const results = document.getElementById('resultsArea');
+
+      btn.disabled = true;
+      load.style.display = 'block';
+      results.style.display = 'none';
+
+      const formData = new FormData(e.target);
+
+      try {
+        const response = await fetch('/home-budget', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+        renderResults(data);
+      } catch (err) {
+        alert('An error occurred while generating recommendations. Please try again.');
+      } finally {
+        btn.disabled = false;
+        load.style.display = 'none';
+      }
+    });
+
+    function renderResults(data) {
+      const container = document.getElementById('resultsArea');
+      const total = Number(data.total_budget || 5000).toFixed(2);
+      const remaining = Number(data.remaining_budget || 0).toFixed(2);
+
+      let html = `
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <button class="ps-btn ps-btn-blue" onclick="document.getElementById('formCard').scrollIntoView({behavior:'smooth'})">
+            📋 Generate Recommendations
+          </button>
+        </div>
+
+        <h2 style="text-align: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 1.25rem;">
+          Your Personalized Budget Plan
+        </h2>
+
+        <div class="ps-results-card">
+          <!-- Budget Summary Bar (Page 50) -->
+          <div class="ps-summary-bar">
+            <span>🌐 Budget Summary</span>
+            <span>Total Budget: ₹${total} &nbsp;&bull;&nbsp; Remaining Budget: ₹${remaining}</span>
+          </div>
+      `;
+
+      if (data.budget_breakdown && data.budget_breakdown.length > 0) {
+        data.budget_breakdown.forEach(cat => {
+          const alloc = cat.allocation ? `Allocation: ₹${Number(cat.allocation).toFixed(2)}` : '';
+          let icon = '💡';
+          if (cat.category.toLowerCase().includes('fan')) icon = '🌀';
+          if (cat.category.toLowerCase().includes('furn')) icon = '🛋️';
+
+          html += `
+            <div style="padding: 1.25rem 1.4rem 0.5rem 1.4rem; border-top: 1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">
+                ${icon} ${cat.category}
+              </h3>
+              <span style="font-size: 0.88rem; font-weight: 600; color: #64748b;">${alloc}</span>
+            </div>
+
+            <table class="ps-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Shopping Links</th>
+                </tr>
+              </thead>
+              <tbody>
+          `;
+
+          (cat.items || []).forEach(item => {
+            let linksHtml = '<div class="ps-shopping-pills">';
+            if (item.shopping_links) {
+              for (const [platform, url] of Object.entries(item.shopping_links)) {
+                linksHtml += `<a href="${url}" target="_blank" rel="noopener" class="ps-shopping-pill">🛒 ${platform}</a>`;
+              }
+            } else {
+              linksHtml += `<a href="https://www.amazon.in/s?k=${encodeURIComponent(item.name)}" target="_blank" class="ps-shopping-pill">Amazon</a>`;
+              linksHtml += `<a href="https://www.flipkart.com/search?q=${encodeURIComponent(item.name)}" target="_blank" class="ps-shopping-pill">Flipkart</a>`;
+              linksHtml += `<a href="https://www.ikea.com/in/en/search/?q=${encodeURIComponent(item.name)}" target="_blank" class="ps-shopping-pill">Ikea</a>`;
+            }
+            linksHtml += '</div>';
+
+            html += `
+              <tr>
+                <td><strong>${item.name}</strong></td>
+                <td style="color: #475569; font-size: 0.85rem;">${item.description || ''}</td>
+                <td style="font-weight: 700; color: #1e3a6f;">₹${Number(item.estimated_price || 0).toFixed(2)}</td>
+                <td>${item.quantity || 1}</td>
+                <td>${linksHtml}</td>
+              </tr>
+            `;
+          });
+
+          html += `</tbody></table>`;
+        });
+      }
+
+      // Additional Suggestions / Tips Box (Page 50)
+      if (data.additional_suggestions) {
+        html += `
+          <div class="ps-tips-box">
+            <div class="ps-tips-header">
+              <span>💡</span> Additional Suggestions
+            </div>
+            <p style="font-size: 0.88rem; color: #475569; line-height: 1.5;">
+              ${data.additional_suggestions}
+            </p>
+          </div>
+        `;
+      }
+
+      html += `</div>`;
+      container.innerHTML = html;
+      container.style.display = 'block';
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

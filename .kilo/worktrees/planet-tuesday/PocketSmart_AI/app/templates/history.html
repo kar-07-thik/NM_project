@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}History{% endblock %}
+
+{% block content %}
+<div class="history-page container">
+    <div class="section-header">
+        <h2>Your Planning History</h2>
+        <p>Review your past budget plans and recommendations</p>
+    </div>
+    
+    {% if history %}
+        <div class="history-grid">
+            {% for item in history %}
+                <div class="history-card glass-card">
+                    <div class="card-header 
+                        {% if item.planner_type == 'home' %}bg-home
+                        {% elif item.planner_type == 'party' %}bg-party
+                        {% else %}bg-jewelry{% endif %}">
+                        
+                        <div class="card-icon">
+                            {% if item.planner_type == 'home' %}
+                                <i class="fa-solid fa-house"></i>
+                            {% elif item.planner_type == 'party' %}
+                                <i class="fa-solid fa-glass-cheers"></i>
+                            {% else %}
+                                <i class="fa-solid fa-gem"></i>
+                            {% endif %}
+                        </div>
+                        <div class="card-title">
+                            <h3>{{ item.planner_type|capitalize }} Plan</h3>
+                            <span class="date">{{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="budget-stat">
+                            <span>Total Budget:</span>
+                            <span class="badge badge-primary">${{ "{:,.2f}".format(item.budget) }}</span>
+                        </div>
+                        <p class="history-desc">
+                            Generated recommendations using Gemini AI.
+                        </p>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <button class="btn-outline small view-details-btn" data-id="{{ item.id }}">View Details</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state glass-card text-center">
+            <i class="fa-regular fa-folder-open large-icon"></i>
+            <h3>No History Found</h3>
+            <p>You haven't made any plans yet. Head to the dashboard to start planning!</p>
+            <a href="{{ url_for('pages.dashboard') }}" class="btn-primary">Go to Dashboard</a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Simple Modal for Details (could be expanded) -->
+<div id="history-modal" class="modal hidden">
+    <div class="modal-content glass-card">
+        <span class="close-modal">&times;</span>
+        <h2>Plan Details</h2>
+        <p>Details will be loaded here...</p>
+        <div class="raw-data-placeholder">
+            <!-- Ideally fetch via JS, but for now we'll just keep it simple -->
+            <p class="text-muted">Feature to view full JSON history can be implemented here.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

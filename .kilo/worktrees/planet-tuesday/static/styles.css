@@ -1,0 +1,1112 @@
+/* ==========================================================================
+   PocketSmart AI — Exact Visual Theme Matching Project Document (Pages 39-59)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Exact Colors from Document */
+  --ps-nav-bg:       #16233b;  /* Dark navy blue navbar */
+  --ps-hero-bg:      #1a335a;  /* Hero gradient dark */
+  --ps-hero-bg-2:    #162744;
+  --ps-primary:      #1e3a6f;  /* Primary brand blue */
+  --ps-primary-dark: #122547;
+  --ps-primary-light:#2b5499;
+  --ps-accent-gold:  #d97706;  /* Orange/gold history button */
+  --ps-accent-orange:#f59e0b;
+  --ps-blue-btn:     #2563eb;
+  
+  --ps-bg-light:     #f1f5f9;  /* Soft light grayish blue background */
+  --ps-card-bg:      #ffffff;
+  --ps-border:       #e2e8f0;
+  --ps-border-subtle:#cbd5e1;
+  
+  --ps-text-main:    #0f172a;
+  --ps-text-muted:   #64748b;
+  --ps-text-light:   #ffffff;
+
+  --ps-radius-sm:    6px;
+  --ps-radius-md:    10px;
+  --ps-radius-lg:    14px;
+  --ps-radius-pill:  9999px;
+
+  --ps-shadow-sm:    0 1px 3px rgba(0,0,0,0.06);
+  --ps-shadow-md:    0 4px 10px rgba(0,0,0,0.08);
+  --ps-shadow-lg:    0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  background-color: var(--ps-bg-light);
+  color: var(--ps-text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--ps-primary-light);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+a:hover {
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  width: 100%;
+}
+
+main {
+  flex: 1;
+}
+
+/* ==========================================================================
+   Navbar (Pages 39, 46, 48, 51, 55, 58)
+   ========================================================================== */
+.ps-navbar {
+  background-color: var(--ps-nav-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.ps-navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ps-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.ps-brand-badge {
+  width: 16px;
+  height: 16px;
+  background-color: #f97316;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.ps-nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 1.25rem;
+}
+
+.ps-nav-link {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--ps-radius-sm);
+  transition: all 0.2s;
+}
+
+.ps-nav-link:hover,
+.ps-nav-link.active {
+  color: #ffffff;
+  background-color: rgba(255,255,255,0.1);
+}
+
+.ps-nav-btn {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 6px 16px;
+  border-radius: var(--ps-radius-pill);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.ps-nav-btn:hover {
+  background-color: #ffffff;
+  color: var(--ps-nav-bg);
+}
+
+/* ==========================================================================
+   Hero Section (Page 39)
+   ========================================================================== */
+.ps-hero {
+  background: linear-gradient(180deg, var(--ps-hero-bg) 0%, var(--ps-hero-bg-2) 100%);
+  color: #ffffff;
+  text-align: center;
+  padding: 4.5rem 1.5rem;
+}
+
+.ps-hero-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.8rem;
+}
+
+.ps-hero-subtitle {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 1.2rem;
+}
+
+.ps-hero-desc {
+  max-width: 720px;
+  margin: 0 auto 2.2rem auto;
+  font-size: 1rem;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.ps-hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.ps-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.65rem 1.6rem;
+  border-radius: var(--ps-radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ps-btn-white {
+  background-color: #ffffff;
+  color: var(--ps-primary-dark);
+}
+.ps-btn-white:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.ps-btn-outline-white {
+  background-color: transparent;
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.7);
+}
+.ps-btn-outline-white:hover {
+  background-color: rgba(255,255,255,0.12);
+  border-color: #ffffff;
+}
+
+.ps-btn-primary {
+  background-color: var(--ps-primary);
+  color: #ffffff;
+}
+.ps-btn-primary:hover {
+  background-color: var(--ps-primary-dark);
+  box-shadow: 0 4px 12px rgba(30, 58, 111, 0.3);
+}
+
+.ps-btn-blue {
+  background-color: #1e3a6f;
+  color: #ffffff;
+}
+.ps-btn-blue:hover {
+  background-color: #15294e;
+}
+
+.ps-btn-gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+}
+.ps-btn-gold:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-1px);
+}
+
+.ps-btn-sm {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
+
+.ps-btn-full {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Section Headers (Pages 39, 40)
+   ========================================================================== */
+.ps-section {
+  padding: 3.5rem 0;
+}
+
+.ps-section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.ps-section-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--ps-text-main);
+  margin-bottom: 0.5rem;
+}
+
+.ps-section-subtitle {
+  font-size: 0.95rem;
+  color: var(--ps-text-muted);
+}
+
+/* 3-Grid Layout */
+.ps-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Feature Cards (Page 39) */
+.ps-feature-card {
+  background-color: #ffffff;
+  border-radius: var(--ps-radius-md);
+  border: 1px solid var(--ps-border);
+  overflow: hidden;
+  box-shadow: var(--ps-shadow-sm);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+.ps-feature-card:hover {
+  box-shadow: var(--ps-shadow-md);
+  transform: translateY(-3px);
+}
+
+.ps-feature-card-header {
+  background-color: #1a2b47;
+  color: #ffffff;
+  padding: 2.2rem 1rem;
+  text-align: center;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ps-feature-card-body {
+  padding: 1.5rem;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ps-feature-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ps-text-main);
+  margin-bottom: 0.75rem;
+}
+
+.ps-feature-card-text {
+  font-size: 0.88rem;
+  color: var(--ps-text-muted);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+/* Testimonial Cards (Page 40) */
+.ps-testimonial-card {
+  background-color: #ffffff;
+  border: 1px solid var(--ps-border);
+  border-radius: var(--ps-radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--ps-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ps-testimonial-quote {
+  font-size: 0.9rem;
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+
+.ps-testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ps-testimonial-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--ps-primary);
+  font-size: 0.9rem;
+}
+
+.ps-testimonial-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ps-text-main);
+}
+.ps-testimonial-role {
+  font-size: 0.8rem;
+  color: var(--ps-text-muted);
+}
+
+/* CTA Banner (Page 40) */
+.ps-cta-banner {
+  background-color: #1e3a6f;
+  color: #ffffff;
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+}
+
+.ps-cta-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.ps-cta-subtitle {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  margin-bottom: 1.8rem;
+}
+
+/* Footer (Page 41) */
+.ps-footer {
+  background-color: #0d1a2d;
+  color: #94a3b8;
+  padding: 3.5rem 0 1.5rem 0;
+  font-size: 0.85rem;
+}
+
+.ps-footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.ps-footer-col-title {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.ps-footer-links {
+  list-style: none;
+}
+.ps-footer-links li {
+  margin-bottom: 0.5rem;
+}
+.ps-footer-links a {
+  color: #94a3b8;
+}
+.ps-footer-links a:hover {
+  color: #ffffff;
+}
+
+.ps-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   Auth Pages (Login / Register - Pages 42, 44)
+   ========================================================================== */
+.ps-auth-wrap {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  background-color: #f1f5f9;
+}
+
+.ps-auth-logo-wrap {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.ps-auth-logo {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1e3a6f;
+  letter-spacing: -0.5px;
+}
+
+.ps-auth-sublogo {
+  font-size: 0.95rem;
+  color: var(--ps-text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.ps-auth-card {
+  background-color: #ffffff;
+  border-radius: var(--ps-radius-lg);
+  border: 1px solid var(--ps-border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  padding: 2.5rem 2.2rem;
+  width: 100%;
+  max-width: 440px;
+}
+
+.ps-auth-card-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.ps-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.ps-form-label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.4rem;
+}
+
+.ps-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.ps-input-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 1rem;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.ps-form-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem 0.65rem 2.4rem;
+  border: 1.5px solid var(--ps-border);
+  border-radius: var(--ps-radius-md);
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--ps-text-main);
+  background-color: #ffffff;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.ps-form-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.ps-form-textarea {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1.5px solid var(--ps-border);
+  border-radius: var(--ps-radius-md);
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--ps-text-main);
+  background-color: #ffffff;
+  transition: all 0.2s;
+  outline: none;
+  min-height: 80px;
+  resize: vertical;
+}
+.ps-form-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.ps-auth-link {
+  font-size: 0.86rem;
+  text-align: center;
+  margin-top: 1.25rem;
+  color: var(--ps-text-muted);
+}
+.ps-auth-link a {
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* ==========================================================================
+   Page Headers (Pages 46, 48, 51, 55, 58)
+   ========================================================================== */
+.ps-page-banner {
+  background-color: #1e3a6f;
+  color: #ffffff;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  margin-bottom: 2rem;
+  box-shadow: inset 0 -2px 6px rgba(0,0,0,0.1);
+}
+
+.ps-page-banner-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.ps-page-banner-subtitle {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   Dashboard (Page 46)
+   ========================================================================== */
+.ps-planner-card {
+  background-color: #ffffff;
+  border: 1px solid var(--ps-border);
+  border-radius: var(--ps-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--ps-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+.ps-planner-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--ps-shadow-md);
+}
+
+.ps-planner-card-img {
+  width: 100%;
+  height: 180px;
+  background-color: #e2e8f0;
+  object-fit: cover;
+  display: block;
+}
+
+.ps-planner-card-body {
+  padding: 1.5rem;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ps-planner-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.ps-planner-card-desc {
+  font-size: 0.88rem;
+  color: var(--ps-text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* Recent Activity Card (Page 46) */
+.ps-activity-card {
+  background-color: #ffffff;
+  border-radius: var(--ps-radius-md);
+  border: 1px solid var(--ps-border);
+  overflow: hidden;
+  box-shadow: var(--ps-shadow-sm);
+  margin-top: 2rem;
+}
+
+.ps-activity-header {
+  background-color: #1e3a6f;
+  color: #ffffff;
+  padding: 0.85rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ps-activity-list {
+  list-style: none;
+}
+
+.ps-activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--ps-border);
+}
+.ps-activity-item:last-child {
+  border-bottom: none;
+}
+
+.ps-activity-icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #1e3a6f;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.ps-activity-info {
+  flex: 1;
+}
+
+.ps-activity-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.ps-activity-meta {
+  font-size: 0.8rem;
+  color: var(--ps-text-muted);
+}
+
+/* ==========================================================================
+   Planner Forms (Pages 48, 51, 55)
+   ========================================================================== */
+.ps-form-container {
+  max-width: 760px;
+  margin: 0 auto 3rem auto;
+}
+
+.ps-form-card {
+  background-color: #ffffff;
+  border: 1px solid var(--ps-border);
+  border-radius: var(--ps-radius-lg);
+  padding: 2rem 2.2rem;
+  box-shadow: var(--ps-shadow-sm);
+}
+
+.ps-form-section {
+  margin-bottom: 1.75rem;
+}
+
+.ps-form-section-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.85rem;
+}
+
+.ps-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Checkbox Pills / Buttons (Pages 48, 51) */
+.ps-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.ps-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.55rem 1.1rem;
+  background-color: #ffffff;
+  border: 1.5px solid var(--ps-border);
+  border-radius: var(--ps-radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.ps-checkbox-label input {
+  display: none;
+}
+
+.ps-checkbox-label.checked,
+.ps-checkbox-label:has(input:checked) {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.ps-check-icon-orange {
+  width: 22px;
+  height: 22px;
+  background-color: #ffedd5;
+  color: #ea580c;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.ps-check-icon-blue {
+  width: 22px;
+  height: 22px;
+  background-color: #dbeafe;
+  color: #2563eb;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.ps-check-icon-gold {
+  width: 22px;
+  height: 22px;
+  background-color: #fef3c7;
+  color: #d97706;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+/* Upload Dropzone (Page 55) */
+.ps-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--ps-radius-md);
+  padding: 2.2rem 1rem;
+  text-align: center;
+  background-color: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ps-dropzone:hover {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+
+/* ==========================================================================
+   Recommendation Results (Pages 50, 53, 57)
+   ========================================================================== */
+.ps-results-card {
+  background-color: #ffffff;
+  border: 1px solid var(--ps-border);
+  border-radius: var(--ps-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--ps-shadow-sm);
+  margin-top: 2rem;
+}
+
+.ps-summary-bar {
+  background-color: #1e3a6f;
+  color: #ffffff;
+  padding: 0.9rem 1.4rem;
+  font-weight: 700;
+  font-size: 0.98rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ps-summary-bar span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ps-category-header {
+  padding: 1rem 1.4rem 0.5rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ps-category-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ps-category-alloc {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ps-text-muted);
+}
+
+/* Data Tables (Page 50, 57) */
+.ps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.ps-table th {
+  background-color: #f8fafc;
+  color: var(--ps-text-muted);
+  font-weight: 600;
+  padding: 0.75rem 1.4rem;
+  text-align: left;
+  border-bottom: 1px solid var(--ps-border);
+}
+
+.ps-table td {
+  padding: 0.85rem 1.4rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.ps-shopping-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ps-shopping-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.ps-shopping-pill:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+/* Party Blocks (Page 53) */
+.ps-party-block {
+  padding: 1.25rem 1.4rem;
+  border-bottom: 1px solid var(--ps-border);
+}
+.ps-party-block:last-child {
+  border-bottom: none;
+}
+
+.ps-party-block-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Styling Tips Box (Page 57) */
+.ps-tips-box {
+  background-color: #f8fafc;
+  border-top: 1px solid var(--ps-border);
+  padding: 1.25rem 1.4rem;
+}
+
+.ps-tips-header {
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+  color: #1e3a6f;
+}
+
+.ps-tips-list {
+  list-style: none;
+}
+.ps-tips-list li {
+  font-size: 0.86rem;
+  color: #334155;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   Recommendation History (Pages 58, 59)
+   ========================================================================== */
+.ps-history-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.ps-history-card {
+  background-color: #ffffff;
+  border: 1px solid var(--ps-border);
+  border-radius: var(--ps-radius-lg);
+  padding: 1.4rem;
+  box-shadow: var(--ps-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ps-history-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ps-history-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ps-history-card-date {
+  font-size: 0.78rem;
+  color: var(--ps-text-muted);
+}
+
+.ps-history-budgets {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ps-history-budget-label {
+  font-size: 0.75rem;
+  color: var(--ps-text-muted);
+}
+
+.ps-history-budget-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.ps-history-budget-rem {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.ps-history-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0.85rem 0 1.25rem 0;
+}
+
+.ps-history-tag {
+  background-color: #f1f5f9;
+  color: #475569;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Alerts & Utilities
+   ========================================================================== */
+.ps-alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--ps-radius-md);
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ps-alert-error {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+.ps-alert-success {
+  background-color: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.ps-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 1.5rem auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .ps-footer-grid {
+    grid-template-columns: 1fr;
+  }
+  .ps-hero-title {
+    font-size: 2.2rem;
+  }
+  .ps-form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Party Budget Planner - PocketSmart</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Navbar (Page 51) -->
+  <header class="ps-navbar">
+    <div class="container ps-navbar-container">
+      <a href="/dashboard" class="ps-brand">
+        <span class="ps-brand-badge"></span>
+        PocketSmart
+      </a>
+      <ul class="ps-nav-menu">
+        <li><a href="/home-planner" class="ps-nav-link">🏠 Home Planner</a></li>
+        <li><a href="/party-planner" class="ps-nav-link active">🎉 Party Planner</a></li>
+        <li><a href="/jewelry-planner" class="ps-nav-link">💎 Jewelry Planner</a></li>
+        <li><a href="/history" class="ps-nav-link">🕒 History</a></li>
+        {% if user and user.is_admin %}
+        <li><a href="/database" class="ps-nav-link" style="color: #60a5fa;">🛡️ Admin DB</a></li>
+        {% endif %}
+        <li><a href="/logout" class="ps-nav-link" style="color: #fca5a5;">🚪 Logout</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Header (Page 51) -->
+    <div class="ps-page-banner">
+      <div class="container">
+        <h1 class="ps-page-banner-title">Party Budget Planner</h1>
+        <p class="ps-page-banner-subtitle">Plan your perfect event with AI-powered budget recommendations</p>
+      </div>
+    </div>
+
+    <div class="container ps-form-container">
+      <!-- Input Form Card (Page 51) -->
+      <div class="ps-form-card" id="formCard">
+        <form id="partyForm">
+          <!-- Section 1: Basic Information -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>💲</span> Basic Information
+            </div>
+            <div class="ps-form-grid-2">
+              <div class="ps-form-group">
+                <label class="ps-form-label">Total Budget (₹)</label>
+                <div class="ps-input-wrap">
+                  <span class="ps-input-icon">💵</span>
+                  <input 
+                    type="number" 
+                    name="total_budget" 
+                    class="ps-form-input" 
+                    placeholder="5000" 
+                    value="5000" 
+                    required 
+                    min="500"
+                  >
+                </div>
+              </div>
+              <div class="ps-form-group">
+                <label class="ps-form-label">Number of Guests</label>
+                <div class="ps-input-wrap">
+                  <span class="ps-input-icon">👥</span>
+                  <input 
+                    type="number" 
+                    name="num_guests" 
+                    class="ps-form-input" 
+                    placeholder="3" 
+                    value="3" 
+                    required 
+                    min="1"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Event Details -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>🎉</span> Event Details
+            </div>
+            <div class="ps-form-grid-2">
+              <div class="ps-form-group">
+                <label class="ps-form-label">Party Type</label>
+                <input 
+                  type="text" 
+                  name="party_type" 
+                  class="ps-form-input" 
+                  placeholder="Wedding / Birthday / Anniversary" 
+                  value="Wedding" 
+                  required
+                >
+              </div>
+              <div class="ps-form-group">
+                <label class="ps-form-label">Venue Type</label>
+                <input 
+                  type="text" 
+                  name="venue_type" 
+                  class="ps-form-input" 
+                  placeholder="Home / Banquet / Lawn" 
+                  value="Home"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Party Needs (Page 51) -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>🍽️</span> Party Needs
+            </div>
+            <div class="ps-checkbox-group">
+              <label class="ps-checkbox-label checked" id="lbl_catering">
+                <input type="checkbox" name="needs_catering" value="true" checked onchange="toggleBox(this, 'lbl_catering')">
+                <span class="ps-check-icon-orange">🍴</span>
+                Catering
+              </label>
+
+              <label class="ps-checkbox-label checked" id="lbl_decoration">
+                <input type="checkbox" name="needs_decoration" value="true" checked onchange="toggleBox(this, 'lbl_decoration')">
+                <span class="ps-check-icon-blue">✨</span>
+                Decoration
+              </label>
+
+              <label class="ps-checkbox-label checked" id="lbl_entertainment">
+                <input type="checkbox" name="needs_entertainment" value="true" checked onchange="toggleBox(this, 'lbl_entertainment')">
+                <span class="ps-check-icon-gold">🎵</span>
+                Entertainment
+              </label>
+            </div>
+          </div>
+
+          <!-- Section 4: Additional Requirements -->
+          <div class="ps-form-section">
+            <div class="ps-form-section-header">
+              <span>📝</span> Additional Requirements
+            </div>
+            <div class="ps-form-group">
+              <textarea 
+                name="additional_requirements" 
+                class="ps-form-textarea" 
+                placeholder="Special requests, themes, dietary restrictions, etc."
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div style="margin-top: 1.5rem;">
+            <button type="submit" class="ps-btn ps-btn-blue ps-btn-full" id="submitBtn">
+              📋 Generate Budget Plan
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="loadingBox" style="display: none; text-align: center; padding: 2.5rem 1rem;">
+        <div class="ps-spinner"></div>
+        <p style="font-weight: 600; color: #1e3a6f;">Generating Party Budget Plan...</p>
+        <p style="color: #64748b; font-size: 0.85rem;">Checking venues, catering, Swiggy, Zomato, Booking &amp; BookMyShow options</p>
+      </div>
+
+      <!-- Results Area (Page 53) -->
+      <div id="resultsArea" style="display: none;"></div>
+
+    </div>
+  </main>
+
+  <footer class="ps-footer" style="padding: 1.5rem 0; margin-top: auto;">
+    <div class="container" style="text-align: center; color: #94a3b8; font-size: 0.82rem;">
+      &copy; 2025 PocketSmart. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    function toggleBox(cb, lblId) {
+      const lbl = document.getElementById(lblId);
+      if (cb.checked) {
+        lbl.classList.add('checked');
+      } else {
+        lbl.classList.remove('checked');
+      }
+    }
+
+    document.getElementById('partyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const load = document.getElementById('loadingBox');
+      const results = document.getElementById('resultsArea');
+
+      btn.disabled = true;
+      load.style.display = 'block';
+      results.style.display = 'none';
+
+      const formData = new FormData(e.target);
+
+      try {
+        const response = await fetch('/party-budget', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+        renderResults(data);
+      } catch (err) {
+        alert('An error occurred while generating recommendations. Please try again.');
+      } finally {
+        btn.disabled = false;
+        load.style.display = 'none';
+      }
+    });
+
+    function renderResults(data) {
+      const container = document.getElementById('resultsArea');
+      const total = Number(data.total_budget || 5000).toFixed(2);
+      const allocated = Number(data.allocated_budget || total).toFixed(2);
+      const remaining = Number(data.remaining_budget || 0).toFixed(2);
+
+      let html = `
+        <div class="ps-results-card" style="padding: 1.5rem;">
+          <!-- Header matching Page 53 -->
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; margin-bottom: 1.25rem;">
+            <div>
+              <h2 style="font-size: 1.45rem; font-weight: 800; color: #1e293b;">Your Party Budget Plan</h2>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #1e3a6f; margin-top: 4px;">
+                Budget: ₹${total}
+              </div>
+            </div>
+            <button class="ps-btn ps-btn-blue ps-btn-sm" onclick="window.print()">
+              🖨️ Print/Save
+            </button>
+          </div>
+      `;
+
+      if (data.budget_breakdown && data.budget_breakdown.length > 0) {
+        data.budget_breakdown.forEach(cat => {
+          let catIcon = '🎉';
+          const catNameLower = cat.category.toLowerCase();
+          if (catNameLower.includes('venue')) catIcon = '📍';
+          if (catNameLower.includes('cater') || catNameLower.includes('food')) catIcon = '🍽️';
+          if (catNameLower.includes('entertain') || catNameLower.includes('music')) catIcon = '🎵';
+          if (catNameLower.includes('conting')) catIcon = '🛡️';
+
+          const costVal = cat.total_cost !== undefined ? `₹${Number(cat.total_cost).toFixed(2)}` : '';
+
+          html += `
+            <div class="ps-party-block">
+              <div class="ps-party-block-top">
+                <span style="display: flex; align-items: center; gap: 8px; color: #1e3a6f;">
+                  <span>${catIcon}</span> ${cat.category}
+                </span>
+                <span style="color: #0f172a;">${costVal}</span>
+              </div>
+          `;
+
+          (cat.items || []).forEach(item => {
+            let linksHtml = '';
+            if (item.shopping_links && Object.keys(item.shopping_links).length > 0) {
+              linksHtml = '<div style="margin-top: 6px; font-size: 0.82rem; color: #64748b;">Shop on: ';
+              for (const [platform, url] of Object.entries(item.shopping_links)) {
+                linksHtml += `<a href="${url}" target="_blank" rel="noopener" style="margin-right: 8px; color: #2563eb; text-decoration: underline;">${platform}</a>`;
+              }
+              linksHtml += '</div>';
+            }
+
+            html += `
+              <div style="padding: 0.65rem 0; border-top: 1px dashed #f1f5f9;">
+                <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.92rem;">
+                  <span>${item.name}</span>
+                  <span>₹${Number(item.estimated_price || 0).toFixed(2)}</span>
+                </div>
+                <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">
+                  ${item.description || ''}
+                </div>
+                ${linksHtml}
+              </div>
+            `;
+          });
+
+          html += `</div>`;
+        });
+      }
+
+      // Summary Table block (Page 53)
+      html += `
+        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.4rem; margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;">
+            <span style="color: #475569;">Total Budget</span>
+            <span style="font-weight: 700;">₹${total}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;">
+            <span style="color: #475569;">Allocated</span>
+            <span style="font-weight: 700; color: #1e3a6f;">₹${allocated}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+            <span style="color: #475569;">Remaining</span>
+            <span style="font-weight: 700; color: #16a34a;">₹${remaining}</span>
+          </div>
+        </div>
+      `;
+
+      // Venue Suggestions (Page 53)
+      if (data.venue_suggestions && data.venue_suggestions.length > 0) {
+        html += `
+          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+            <h4 style="font-size: 1rem; font-weight: 700; color: #1e293b; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;">
+              <span>📍</span> Venue Suggestions
+            </h4>
+        `;
+        data.venue_suggestions.forEach(v => {
+          let linksHtml = '';
+          if (v.shopping_links) {
+            linksHtml = '<div style="margin-top: 6px;">';
+            for (const [platform, url] of Object.entries(v.shopping_links)) {
+              linksHtml += `<a href="${url}" target="_blank" rel="noopener" class="ps-shopping-pill" style="margin-right: 6px;">🔗 ${platform}</a>`;
+            }
+            linksHtml += '</div>';
+          }
+          html += `
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 0.5rem;">
+              <div style="display: flex; justify-content: space-between; font-weight: 700;">
+                <span>${v.name}</span>
+                <span>₹${Number(v.estimated_cost || 0).toFixed(2)}</span>
+              </div>
+              <div style="font-size: 0.82rem; color: #64748b;">Type: ${v.type || 'Residential'}</div>
+              ${linksHtml}
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      html += `</div>`;
+      container.innerHTML = html;
+      container.style.display = 'block';
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

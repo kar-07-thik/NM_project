@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - PocketSmart</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Navbar (Page 46) -->
+  <header class="ps-navbar">
+    <div class="container ps-navbar-container">
+      <a href="/dashboard" class="ps-brand">
+        <span class="ps-brand-badge"></span>
+        PocketSmart
+      </a>
+      <ul class="ps-nav-menu">
+        <li><a href="/home-planner" class="ps-nav-link">🏠 Home Planner</a></li>
+        <li><a href="/party-planner" class="ps-nav-link">🎉 Party Planner</a></li>
+        <li><a href="/jewelry-planner" class="ps-nav-link">💎 Jewelry Planner</a></li>
+        <li><a href="/history" class="ps-nav-link">🕒 History</a></li>
+        {% if user and user.is_admin %}
+        <li><a href="/database" class="ps-nav-link" style="color: #60a5fa;">🛡️ Admin DB</a></li>
+        {% endif %}
+        <li><a href="/logout" class="ps-nav-link" style="color: #fca5a5;">🚪 Logout</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <!-- Welcome Banner (Page 46) -->
+    <div class="ps-page-banner">
+      <div class="container">
+        <h1 class="ps-page-banner-title">Welcome, {{ user.username }}!</h1>
+        <p class="ps-page-banner-subtitle">Choose a budget planner to get started with your personalized financial planning experience</p>
+      </div>
+    </div>
+
+    <div class="container" style="padding-bottom: 3.5rem;">
+      <!-- 3 Planner Cards with Illustrations (Page 46) -->
+      <div class="ps-grid-3" style="margin-bottom: 2rem;">
+        <!-- Card 1: Home Budget Planner -->
+        <div class="ps-planner-card">
+          <img src="/static/images/home_planner.svg" alt="Home Budget Planner" class="ps-planner-card-img">
+          <div class="ps-planner-card-body">
+            <div>
+              <h3 class="ps-planner-card-title">🏠 Home Budget Planner</h3>
+              <p class="ps-planner-card-desc">
+                Plan your interior design budget efficiently with AI-powered recommendations for furniture, lighting, and more.
+              </p>
+            </div>
+            <a href="/home-planner" class="ps-btn ps-btn-blue ps-btn-full">Get Started</a>
+          </div>
+        </div>
+
+        <!-- Card 2: Party Budget Planner -->
+        <div class="ps-planner-card">
+          <img src="/static/images/party_planner.svg" alt="Party Budget Planner" class="ps-planner-card-img">
+          <div class="ps-planner-card-body">
+            <div>
+              <h3 class="ps-planner-card-title">🎉 Party Budget Planner</h3>
+              <p class="ps-planner-card-desc">
+                Plan your perfect event with budget allocations for venue, catering, decorations, and entertainment.
+              </p>
+            </div>
+            <a href="/party-planner" class="ps-btn ps-btn-blue ps-btn-full">Get Started</a>
+          </div>
+        </div>
+
+        <!-- Card 3: Jewelry Budget Planner -->
+        <div class="ps-planner-card">
+          <img src="/static/images/jewelry_planner.svg" alt="Jewelry Budget Planner" class="ps-planner-card-img">
+          <div class="ps-planner-card-body">
+            <div>
+              <h3 class="ps-planner-card-title">💎 Jewelry Budget Planner</h3>
+              <p class="ps-planner-card-desc">
+                Find the ideal jewelry pieces for any occasion that match your outfit and stay within your budget.
+              </p>
+            </div>
+            <a href="/jewelry-planner" class="ps-btn ps-btn-blue ps-btn-full">Get Started</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- View All Recommendation History Button (Page 46) -->
+      <div style="text-align: center; margin: 2rem 0;">
+        <a href="/history" class="ps-btn ps-btn-gold">
+          📋 View All Recommendation History
+        </a>
+      </div>
+
+      <!-- Recent Activity (Page 46) -->
+      <div class="ps-activity-card">
+        <div class="ps-activity-header">
+          <span>🕒</span> Recent Activity
+        </div>
+        <ul class="ps-activity-list">
+          {% if recent_activity and recent_activity|length > 0 %}
+            {% for item in recent_activity %}
+            <li class="ps-activity-item">
+              <div class="ps-activity-icon-circle">
+                {% if item.type == 'home' %}🏠{% elif item.type == 'party' %}🎉{% else %}💎{% endif %}
+              </div>
+              <div class="ps-activity-info">
+                <div class="ps-activity-title">{{ item.type | capitalize }} Budget Plan</div>
+                <div class="ps-activity-meta">
+                  Budget: ₹{{ item.input_summary.total_budget }} &bull; Created on {{ item.timestamp[:10] }}
+                </div>
+              </div>
+              <a href="/history" class="ps-btn ps-btn-blue ps-btn-sm">View Details</a>
+            </li>
+            {% endfor %}
+          {% else %}
+            <!-- Demo placeholder rows matching Page 46 illustration -->
+            <li class="ps-activity-item">
+              <div class="ps-activity-icon-circle">🏠</div>
+              <div class="ps-activity-info">
+                <div class="ps-activity-title">Home Budget Plan</div>
+                <div class="ps-activity-meta">Budget: ₹5,000 &bull; Ready to create your first customized plan!</div>
+              </div>
+              <a href="/home-planner" class="ps-btn ps-btn-blue ps-btn-sm">Create Plan</a>
+            </li>
+            <li class="ps-activity-item">
+              <div class="ps-activity-icon-circle">🎉</div>
+              <div class="ps-activity-info">
+                <div class="ps-activity-title">Party Budget Plan</div>
+                <div class="ps-activity-meta">Budget: ₹5,000 for your celebration</div>
+              </div>
+              <a href="/party-planner" class="ps-btn ps-btn-blue ps-btn-sm">Create Plan</a>
+            </li>
+            <li class="ps-activity-item">
+              <div class="ps-activity-icon-circle">💎</div>
+              <div class="ps-activity-info">
+                <div class="ps-activity-title">Jewelry Budget Plan</div>
+                <div class="ps-activity-meta">Budget: ₹5,000 for upcoming occasion</div>
+              </div>
+              <a href="/jewelry-planner" class="ps-btn ps-btn-blue ps-btn-sm">Create Plan</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="ps-footer" style="padding: 1.5rem 0; margin-top: auto;">
+    <div class="container" style="text-align: center; color: #94a3b8; font-size: 0.82rem;">
+      &copy; 2025 PocketSmart. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>

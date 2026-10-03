@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Account - PocketSmart</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body style="background-color: #f1f5f9;">
+
+  <div class="ps-auth-wrap">
+    <!-- Brand Logo (Page 42) -->
+    <div class="ps-auth-logo-wrap">
+      <div class="ps-auth-logo">PocketSmart</div>
+      <div class="ps-auth-sublogo">AI-Powered Budget Planning</div>
+    </div>
+
+    <!-- Register Card (Page 42) -->
+    <div class="ps-auth-card">
+      <h2 class="ps-auth-card-title">Create Your Account</h2>
+
+      {% if error %}
+      <div class="ps-alert ps-alert-error">
+        <span>⚠️</span> {{ error }}
+      </div>
+      {% endif %}
+
+      <form action="/api/register" method="post" id="registerForm">
+        <!-- Username -->
+        <div class="ps-form-group">
+          <label class="ps-form-label">Username</label>
+          <div class="ps-input-wrap">
+            <span class="ps-input-icon">👤</span>
+            <input 
+              type="text" 
+              name="username" 
+              class="ps-form-input" 
+              placeholder="Choose a username" 
+              required 
+              minlength="3"
+              autocomplete="username"
+            >
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="ps-form-group">
+          <label class="ps-form-label">Email</label>
+          <div class="ps-input-wrap">
+            <span class="ps-input-icon">✉️</span>
+            <input 
+              type="email" 
+              name="email" 
+              class="ps-form-input" 
+              placeholder="Enter your email" 
+              required 
+              autocomplete="email"
+            >
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="ps-form-group">
+          <label class="ps-form-label">Password</label>
+          <div class="ps-input-wrap">
+            <span class="ps-input-icon">🔒</span>
+            <input 
+              type="password" 
+              name="password" 
+              id="password"
+              class="ps-form-input" 
+              placeholder="Create a strong password" 
+              required 
+              minlength="6"
+              autocomplete="new-password"
+            >
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="ps-form-group">
+          <label class="ps-form-label">Confirm Password</label>
+          <div class="ps-input-wrap">
+            <span class="ps-input-icon">🛡️</span>
+            <input 
+              type="password" 
+              name="confirm_password" 
+              id="confirm_password"
+              class="ps-form-input" 
+              placeholder="Confirm your password" 
+              required 
+              autocomplete="new-password"
+            >
+          </div>
+          <small id="pwdMatchMsg" style="display:block; margin-top:4px; font-size:0.8rem;"></small>
+        </div>
+
+        <!-- Submit Button (Page 42) -->
+        <div style="margin-top: 1.5rem;">
+          <button type="submit" class="ps-btn ps-btn-blue ps-btn-full" id="submitBtn">
+            Create Account 👤+
+          </button>
+        </div>
+      </form>
+
+      <!-- Bottom link -->
+      <div class="ps-auth-link">
+        Already have an account? <a href="/login">Sign In</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const pwd = document.getElementById('password');
+    const cpwd = document.getElementById('confirm_password');
+    const msg = document.getElementById('pwdMatchMsg');
+
+    function checkMatch() {
+      if (!cpwd.value) {
+        msg.textContent = '';
+        return;
+      }
+      if (pwd.value === cpwd.value) {
+        msg.textContent = '✓ Passwords match';
+        msg.style.color = '#16a34a';
+      } else {
+        msg.textContent = '✗ Passwords do not match';
+        msg.style.color = '#dc2626';
+      }
+    }
+
+    pwd.addEventListener('input', checkMatch);
+    cpwd.addEventListener('input', checkMatch);
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      if (pwd.value !== cpwd.value) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+      } else {
+        document.getElementById('submitBtn').innerText = 'Creating Account...';
+      }
+    });
+  </script>
+</body>
+</html>
